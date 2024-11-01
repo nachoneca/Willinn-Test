@@ -1,0 +1,22 @@
+# This is a generated file. Not intended for manual editing.
+services:
+  willinn-unknown-api:
+    build:
+      context: "C:\\Users\\ignac\\RiderProjects\\Willinn-Test"
+      dockerfile: "Api/Dockerfile-test"
+      target: "base"
+    command: []
+    entrypoint:
+    - "dotnet"
+    - "/app/bin/Debug/net8.0/Api.dll"
+    environment:
+      ASPNETCORE_ENVIRONMENT: "Development"
+      DOTNET_USE_POLLING_FILE_WATCHER: "true"
+    image: "api:dev"
+    ports: []
+    volumes:
+    - "C:\\Users\\ignac\\AppData\\Roaming\\Microsoft\\UserSecrets:/home/app/.microsoft/usersecrets"
+    - "C:\\Users\\ignac\\.nuget\\packages:/home/app/.nuget/packages"
+    - "C:\\Users\\ignac\\RiderProjects\\Willinn-Test\\Api:/app:rw"
+    - "C:\\Users\\ignac\\RiderProjects\\Willinn-Test:/src:rw"
+    working_dir: "/app"

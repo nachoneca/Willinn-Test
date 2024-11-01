@@ -1,10 +1,35 @@
 services:
+  
   willinn-unknown-api:
     build:
       context: .
       dockerfile: Api/Dockerfile-test
     container_name: willinn-unknown-api
     environment:
-      "ASPNETCORE_URLS": "http://+:5001"
+      - ASPNETCORE_URLS=http://+:5001
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Neka_DB;User=sa;Password=Nachonecasek*2001;
     ports:
       - "5001:5001"
+    depends_on:
+      - mssql
+    networks:
+      - app_network
+  
+  mssql:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: sqlserver
+    environment:
+      - ACCEPT_EULA=Y
+      - SA_PASSWORD=Nachonecasek*2001
+    ports:
+      - "1433:1433"
+    volumes:
+      - sql_data:/var/opt/mssql
+    networks:
+      - app_network
+
+volumes:
+  sql_data:
+
+networks:
+  app_network:

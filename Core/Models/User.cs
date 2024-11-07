@@ -1,10 +1,16 @@
+using System.ComponentModel.DataAnnotations;
+
 namespace Core.Models;
 
 public class User
 {
-    public required int Id { get; set; }
-    public required string Name { get; set; }
-    public required string Email { get; set; }
-    public required string Password { get; set; }
-    public required bool IsActive { get; set; }
+    public int Id { get; set; }
+    [Required]
+    public string Name { get; set; }
+    [EmailAddress]
+    [Required]
+    public string Email { get; set; }
+    [Required]
+    public string Password { get; set; }
+    public bool IsActive { get; set; }
 }

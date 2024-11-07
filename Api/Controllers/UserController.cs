@@ -48,12 +48,26 @@ namespace Api.Controllers
         [HttpPost("create")]
         public async Task<ActionResult<User>> CreateUser(User user)
         {
+            if (user == null)
+            {
+                return BadRequest("El objeto de usuario no puede ser nulo.");
+            }
+            if (string.IsNullOrEmpty(user.Name) || string.IsNullOrEmpty(user.Email) || string.IsNullOrEmpty(user.Password))
+            {
+                return BadRequest("Todos los campos (nombre, email y contraseña) son obligatorios.");
+            }
             user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             
             _context.User.Add(user);
             
-            await _context.SaveChangesAsync();
-            
+            try
+            {
+                await _context.SaveChangesAsync();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest($"Error al guardar el usuario: {ex.Message}");
+            }
             user.Password = null; // Para no devolver la contraseña hasheada
             return Ok(user);
         }
@@ -88,15 +102,15 @@ namespace Api.Controllers
         }
         
         [HttpPost("login")]
-        public async Task<ActionResult<string>> Login(string email, string password)
+        public async Task<ActionResult<string>> Login([FromBody] LoginRequest request)
         {
-            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == email);
+            var user = await _context.User.FirstOrDefaultAsync(u => u.Email == request.Email);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(password, user.Password))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(request.Password, user.Password))
             {
-                return Unauthorized();
+                return Unauthorized(new { message = "Email o contraseña incorrecta" });
             }
-            
+    
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(_configuration["Jwt:Key"]);
             var tokenDescriptor = new SecurityTokenDescriptor
@@ -112,6 +126,6 @@ namespace Api.Controllers
 
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return Ok(new { Token = tokenHandler.WriteToken(token) });
-        }
+        }   
     }
 }

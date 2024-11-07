@@ -2,7 +2,7 @@
 services:
   willinn-unknown-api:
     build:
-      context: "C:\\Users\\ignac\\RiderProjects\\Willinn-Test"
+      context: "C:\\Users\\ignac\\RiderProjects\\Willinn-Test-NoLoggin"
       dockerfile: "Api/Dockerfile-test"
       target: "base"
     command: []
@@ -17,6 +17,6 @@ services:
     volumes:
     - "C:\\Users\\ignac\\AppData\\Roaming\\Microsoft\\UserSecrets:/home/app/.microsoft/usersecrets"
     - "C:\\Users\\ignac\\.nuget\\packages:/home/app/.nuget/packages"
-    - "C:\\Users\\ignac\\RiderProjects\\Willinn-Test\\Api:/app:rw"
-    - "C:\\Users\\ignac\\RiderProjects\\Willinn-Test:/src:rw"
+    - "C:\\Users\\ignac\\RiderProjects\\Willinn-Test-NoLoggin\\Api:/app:rw"
+    - "C:\\Users\\ignac\\RiderProjects\\Willinn-Test-NoLoggin:/src:rw"
     working_dir: "/app"

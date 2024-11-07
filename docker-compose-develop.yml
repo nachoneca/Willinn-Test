@@ -7,7 +7,7 @@ services:
     container_name: willinn-unknown-api
     environment:
       - ASPNETCORE_URLS=http://+:5001
-      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Neka_DB;User=sa;Password=Nachonecasek*2001;
+      - ConnectionStrings__DefaultConnection=Server=sqlserver;Database=Neka_DB;User=sa;Password=Nachonecasek*2001;TrustServerCertificate=True;
     ports:
       - "5001:5001"
     depends_on:
